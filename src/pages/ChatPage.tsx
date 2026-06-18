@@ -33,17 +33,16 @@ export default function ChatPage() {
         ) : messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-muted-foreground max-w-md mx-auto text-center space-y-2">
             <h3 className="font-semibold text-lg text-foreground">Welcome to Ouroboros Chat</h3>
-            <p className="text-sm">Start typing below to talk to the AI assistants and orchestrate agent tasks.</p>
+            <p className="text-sm">
+              Start typing below to talk to the AI assistants and orchestrate agent tasks.
+            </p>
           </div>
         ) : (
           <div className="max-w-3xl mx-auto space-y-4">
             {messages.map((m) => {
               const isUser = m.role === "user";
               return (
-                <div
-                  key={m.id}
-                  className={`flex ${isUser ? "justify-end" : "justify-start"}`}
-                >
+                <div key={m.id} className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
                   <div
                     className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
                       isUser
@@ -59,9 +58,18 @@ export default function ChatPage() {
             {isStreaming && (
               <div className="flex justify-start">
                 <div className="bg-muted text-foreground rounded-2xl rounded-bl-none px-4 py-2.5 text-sm flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-foreground/50 animate-bounce" style={{ animationDelay: "0ms" }} />
-                  <span className="h-1.5 w-1.5 rounded-full bg-foreground/50 animate-bounce" style={{ animationDelay: "150ms" }} />
-                  <span className="h-1.5 w-1.5 rounded-full bg-foreground/50 animate-bounce" style={{ animationDelay: "300ms" }} />
+                  <span
+                    className="h-1.5 w-1.5 rounded-full bg-foreground/50 animate-bounce"
+                    style={{ animationDelay: "0ms" }}
+                  />
+                  <span
+                    className="h-1.5 w-1.5 rounded-full bg-foreground/50 animate-bounce"
+                    style={{ animationDelay: "150ms" }}
+                  />
+                  <span
+                    className="h-1.5 w-1.5 rounded-full bg-foreground/50 animate-bounce"
+                    style={{ animationDelay: "300ms" }}
+                  />
                 </div>
               </div>
             )}
@@ -81,7 +89,12 @@ export default function ChatPage() {
             className="flex-1 h-10 px-4 rounded-full border bg-card text-sm focus:outline-none focus:ring-1 focus:ring-ring"
             disabled={isStreaming}
           />
-          <Button type="submit" size="icon" className="h-10 w-10 rounded-full shrink-0" disabled={!input.trim() || isStreaming}>
+          <Button
+            type="submit"
+            size="icon"
+            className="h-10 w-10 rounded-full shrink-0"
+            disabled={!input.trim() || isStreaming}
+          >
             <Send className="h-4 w-4" />
           </Button>
         </form>

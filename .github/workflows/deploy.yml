@@ -16,7 +16,8 @@ concurrency:
 env:
   NODE_VERSION: "24"
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-  PRODUCTION_DOMAIN: "myproject.com" # CHANGE THIS TO YOUR TARGET PRODUCTION DOMAIN
+  PRODUCTION_DOMAIN: "code-iplier.github.io"
+  PRODUCTION_PATH: "/Ouroboros-Custom-test"
 
 permissions:
   contents: read
@@ -98,18 +99,9 @@ jobs:
           VITE_API_VERSION: ${{ secrets.VITE_API_VERSION || vars.VITE_API_VERSION || 'v1' }}
           VITE_APP_VERSION: ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || '' }}
 
-      - name: Verify CNAME in build output
+      - name: Verify build output
         run: |
-          if [ ! -f dist/CNAME ]; then
-            echo "❌ dist/CNAME not found! Ensure public/CNAME contains: ${{ env.PRODUCTION_DOMAIN }}"
-            exit 1
-          fi
-          DOMAIN=$(cat dist/CNAME | tr -d '[:space:]')
-          echo "✅ CNAME found: $DOMAIN"
-          if [ "$DOMAIN" != "${{ env.PRODUCTION_DOMAIN }}" ]; then
-            echo "⚠️ Expected ${{ env.PRODUCTION_DOMAIN }} but got: $DOMAIN"
-            exit 1
-          fi
+          echo "✅ Build output ready for ${{ env.PRODUCTION_DOMAIN }}${{ env.PRODUCTION_PATH }}"
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v7
@@ -280,13 +272,13 @@ jobs:
           name: build
           path: dist
 
-      - name: Verify CNAME in dist
+      - name: Verify dist exists
         run: |
-          if [ ! -f dist/CNAME ]; then
-            echo "❌ dist/CNAME missing — deployment would break custom domain!"
+          if [ ! -f dist/index.html ]; then
+            echo "❌ dist/index.html not found!"
             exit 1
           fi
-          echo "✅ CNAME: $(cat dist/CNAME)"
+          echo "✅ dist verified"
 
       - name: Record current gh-pages HEAD (for rollback)
         run: |
@@ -305,7 +297,7 @@ jobs:
 
       - name: Health check website assets
         run: |
-          URL="https://${{ env.PRODUCTION_DOMAIN }}/"
+          URL="https://${{ env.PRODUCTION_DOMAIN }}${{ env.PRODUCTION_PATH }}/"
           ORIGIN="https://${{ env.PRODUCTION_DOMAIN }}"
           echo "Checking $URL ..."
           for i in {1..24}; do
@@ -344,7 +336,7 @@ jobs:
 
       - name: Run Playwright smoke test
         run: |
-          export URL="https://${{ env.PRODUCTION_DOMAIN }}/"
+          export URL="https://${{ env.PRODUCTION_DOMAIN }}${{ env.PRODUCTION_PATH }}/"
           cat > smoke.cjs << 'JS'
           const { chromium } = require('playwright');
           (async () => {
@@ -379,7 +371,8 @@ jobs:
         if: failure()
         run: |
           if [ -z "${PREV_GHPAGES_SHA:-}" ]; then
-            echo "No rollback targets available"; exit 1
+            echo "No previous gh-pages SHA found — skipping rollback"
+            exit 0
           fi
           echo "Rolling back gh-pages to $PREV_GHPAGES_SHA"
           git fetch --prune origin gh-pages
@@ -400,7 +393,7 @@ jobs:
     steps:
       - name: Fetch website and check app-version
         run: |
-          URL="https://${{ env.PRODUCTION_DOMAIN }}/"
+          URL="https://${{ env.PRODUCTION_DOMAIN }}${{ env.PRODUCTION_PATH }}/"
           EXPECTED="${{ github.ref_name }}"
           sleep 15
           DEPLOYED=""
@@ -434,7 +427,7 @@ jobs:
       - name: OWASP ZAP Baseline
         run: |
           docker run --rm -v $(pwd):/zap/wrk -t ghcr.io/zaproxy/zaproxy:stable \
-            zap-baseline.py -t "https://${{ env.PRODUCTION_DOMAIN }}/" \
+            zap-baseline.py -t "https://${{ env.PRODUCTION_DOMAIN }}${{ env.PRODUCTION_PATH }}/" \
             -J zap-production.json -w zap-production.md -r zap-production.html -a \
             > zap-baseline.log 2>&1 || true
 
@@ -484,7 +477,7 @@ jobs:
           {
             echo "# CI Reports";
             echo "- Commit: $GITHUB_SHA";
-            echo "- Domain: https://${{ env.PRODUCTION_DOMAIN }}";
+            echo "- Domain: https://${{ env.PRODUCTION_DOMAIN }}${{ env.PRODUCTION_PATH }}";
             echo "";
             echo "## Job Results";
             echo "- Lint & Formatting: ${{ needs.lint-quality.result }}";

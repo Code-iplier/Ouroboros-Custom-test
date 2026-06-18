@@ -37,13 +37,17 @@ export default function ProfileComplete() {
       <div className="w-full max-w-md border rounded-xl p-6 bg-card space-y-6 shadow-sm">
         <div className="text-center space-y-1">
           <h2 className="text-2xl font-bold">Complete your Profile</h2>
-          <p className="text-sm text-muted-foreground">Please provide details to configure your account.</p>
+          <p className="text-sm text-muted-foreground">
+            Please provide details to configure your account.
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label htmlFor="first_name" className="text-xs font-semibold text-muted-foreground">First Name</label>
+              <label htmlFor="first_name" className="text-xs font-semibold text-muted-foreground">
+                First Name
+              </label>
               <input
                 id="first_name"
                 type="text"
@@ -54,7 +58,9 @@ export default function ProfileComplete() {
               />
             </div>
             <div className="space-y-1">
-              <label htmlFor="last_name" className="text-xs font-semibold text-muted-foreground">Last Name</label>
+              <label htmlFor="last_name" className="text-xs font-semibold text-muted-foreground">
+                Last Name
+              </label>
               <input
                 id="last_name"
                 type="text"
@@ -67,7 +73,9 @@ export default function ProfileComplete() {
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="email" className="text-xs font-semibold text-muted-foreground">Email Address</label>
+            <label htmlFor="email" className="text-xs font-semibold text-muted-foreground">
+              Email Address
+            </label>
             <input
               id="email"
               type="email"

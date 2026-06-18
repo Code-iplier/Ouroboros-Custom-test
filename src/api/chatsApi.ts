@@ -11,7 +11,6 @@ import type {
   Chat,
   ChatFilters,
   CreateChatRequest,
-  Message,
   MessageFilters,
   PaginatedChatsResponse,
   PaginatedMessagesResponse,

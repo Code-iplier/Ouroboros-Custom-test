@@ -7,7 +7,9 @@ export default function ProfilePage() {
     <div className="flex-1 overflow-auto p-6 space-y-6">
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Student Profile</h2>
-        <p className="text-sm text-muted-foreground">Manage your educational profile and contact information.</p>
+        <p className="text-sm text-muted-foreground">
+          Manage your educational profile and contact information.
+        </p>
       </div>
 
       <div className="border rounded-lg p-6 bg-card max-w-xl space-y-4">

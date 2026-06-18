@@ -16,6 +16,8 @@ const getApiBaseUrl = (): string => {
 };
 
 export const env = {
+  /** Base path from Vite config (e.g. "/" or "/Ouroboros-Custom-test/") */
+  BASE_PATH: import.meta.env.BASE_URL || "/",
   API_BASE_URL: getApiBaseUrl(),
   API_VERSION: import.meta.env.VITE_API_VERSION || "v1",
   /** App version from build (e.g. v1.0.0); set by CI when deploying from a tag. */
