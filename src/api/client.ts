@@ -65,7 +65,7 @@ async function refreshAccessToken(): Promise<string> {
 
 function handleAuthFailure(): void {
   clearTokens();
-  window.location.href = "/login";
+  window.location.href = env.BASE_PATH + "#/login";
 }
 
 // Request interceptor: attach Bearer token, proactive refresh

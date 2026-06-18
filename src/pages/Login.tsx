@@ -43,7 +43,7 @@ export default function Login() {
       tokenResponse.expires_in
     );
     const base = import.meta.env.BASE_URL || "/";
-    window.location.href = `${base}dashboard`;
+    window.location.href = `${base}#/dashboard`;
   };
 
   const isMockMode = import.meta.env.VITE_USE_MOCK_API === "true";

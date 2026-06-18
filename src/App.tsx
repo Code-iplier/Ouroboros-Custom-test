@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
@@ -27,7 +27,7 @@ export default function App() {
     <ErrorBoundary>
       <ThemeProvider>
         <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
+          <HashRouter>
             <AuthProvider>
               <Routes>
                 <Route path="/login" element={<Login />} />
@@ -47,7 +47,7 @@ export default function App() {
               </Routes>
               <Toaster />
             </AuthProvider>
-          </BrowserRouter>
+          </HashRouter>
         </QueryClientProvider>
       </ThemeProvider>
     </ErrorBoundary>
