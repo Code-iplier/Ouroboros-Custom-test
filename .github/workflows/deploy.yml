@@ -97,13 +97,8 @@ jobs:
         env:
           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL || vars.VITE_API_BASE_URL || format('https://api.{0}', env.PRODUCTION_DOMAIN) }}
           VITE_API_VERSION: ${{ secrets.VITE_API_VERSION || vars.VITE_API_VERSION || 'v1' }}
+          VITE_APP_VERSION: ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || '' }}
           VITE_USE_MOCK_API: "true"
-
-      - name: Inject app-version meta tag
-        if: startsWith(github.ref, 'refs/tags/v')
-        run: |
-          VERSION="${{ github.ref_name }}"
-          sed -i "s|</head>|<meta name=\"app-version\" content=\"${VERSION}\"></head>|" dist/index.html
 
       - name: Verify build output
         run: |
