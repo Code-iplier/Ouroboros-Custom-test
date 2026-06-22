@@ -4,18 +4,7 @@ import path from "path";
 
 export default defineConfig({
   base: "/ouroboros-custom-test/",
-  plugins: [
-    react(),
-    {
-      name: "inject-app-version",
-      transformIndexHtml(html) {
-        return html.replace(
-          "</head>",
-          `<meta name="app-version" content="${process.env.VITE_APP_VERSION || ""}"></head>`
-        );
-      },
-    },
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
